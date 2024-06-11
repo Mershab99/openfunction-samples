@@ -1,50 +1,16 @@
 package hello
 
 import (
-	"context"
 	"encoding/json"
-	"net/http"
-
-	ofctx "github.com/OpenFunction/functions-framework-go/context"
-	"github.com/OpenFunction/functions-framework-go/functions"
-	cloudevents "github.com/cloudevents/sdk-go/v2"
-	"k8s.io/klog/v2"
+	ofctx "github.com/Mershab99/functions-framework-go/context"
+	"github.com/Mershab99/functions-framework-go/functions"
 )
 
 func init() {
-	functions.HTTP("Hello", hello,
-		functions.WithFunctionPath("/hello/{name}"),
-		functions.WithFunctionMethods("GET", "POST"),
-	)
-
-	functions.CloudEvent("Foo", foo,
-		functions.WithFunctionPath("/foo/{name}"),
-	)
-
 	functions.OpenFunction("Bar", bar,
 		functions.WithFunctionPath("/bar/{name}"),
 		functions.WithFunctionMethods("GET", "POST"),
 	)
-}
-
-func hello(w http.ResponseWriter, r *http.Request) {
-	vars := ofctx.VarsFromCtx(r.Context())
-	response := map[string]string{
-		"hello": vars["name"],
-	}
-	responseBytes, _ := json.Marshal(response)
-	w.Header().Set("Content-type", "application/json")
-	w.Write(responseBytes)
-}
-
-func foo(ctx context.Context, ce cloudevents.Event) error {
-	vars := ofctx.VarsFromCtx(ctx)
-	response := map[string]string{
-		string(ce.Data()): vars["name"],
-	}
-	responseBytes, _ := json.Marshal(response)
-	klog.Infof("cloudevent - Data: %s", string(responseBytes))
-	return nil
 }
 
 func bar(ctx ofctx.Context, in []byte) (ofctx.Out, error) {
@@ -52,6 +18,9 @@ func bar(ctx ofctx.Context, in []byte) (ofctx.Out, error) {
 	response := map[string]string{
 		string(in): vars["name"],
 	}
+
+	// Test DAPR Client
+	ctx.GetDaprClient()
 	responseBytes, _ := json.Marshal(response)
 	return ctx.ReturnOnSuccess().WithData(responseBytes), nil
 }
