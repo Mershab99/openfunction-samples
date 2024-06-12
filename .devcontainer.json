@@ -4,11 +4,13 @@
   "features": {
     "ghcr.io/balazs23/devcontainers-features/bazel:1": {}
     // "ghcr.io/audacioustux/devcontainers/pack-cli:1": {}
-  },
+  }
+  /*
   "postStartCommand": [
     "curl -sSL \"https://github.com/buildpacks/pack/releases/download/v0.34.2/pack-v0.34.2-linux.tgz\" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack",
     "curl -LO https://github.com/GoogleContainerTools/container-structure-test/releases/latest/download/container-structure-test-linux-amd64 && chmod +x container-structure-test-linux-amd64 && mkdir -p $HOME/bin && export PATH=$PATH:$HOME/bin && mv container-structure-test-linux-amd64 $HOME/bin/container-structure-test"
   ]
-  // "runArgs": ["--init", "--privileged"]
+  "runArgs": ["--init", "--privileged"]
+  */
 }
 
